@@ -1,8 +1,10 @@
-numpy
-pandas
 langchain
-langchain-community
 langchain-core
+langchain-community
 langchain-huggingface
-faiss-cpu==1.7.4
-ipykernel
+sentence-transformers
+transformers
+huggingface-hub
+torch
+faiss-cpu
+
