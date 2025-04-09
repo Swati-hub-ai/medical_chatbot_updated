@@ -2,9 +2,13 @@ langchain
 langchain-core
 langchain-community
 langchain-huggingface
+langchian_ollama
 sentence-transformers
 transformers
 huggingface-hub
 torch
 faiss-cpu
+streamlit
+pypdf
+
 
