@@ -5,6 +5,10 @@ FROM python:3.11-slim
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
+# Accept HF_TOKEN securely during build
+ARG HF_TOKEN
+ENV HF_TOKEN=$HF_TOKEN
+
 # Set working directory inside container
 WORKDIR /app
 

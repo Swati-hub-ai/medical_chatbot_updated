@@ -1,4 +1,5 @@
 steps:
+  # Step 1: Build Docker image and pass HF_TOKEN securely
   - name: 'gcr.io/cloud-builders/docker'
     args:
       [
@@ -10,6 +11,7 @@ steps:
         '.'
       ]
 
+  # Step 2: Push Docker image to Google Container Registry
   - name: 'gcr.io/cloud-builders/docker'
     args:
       [
@@ -17,18 +19,23 @@ steps:
         'gcr.io/$PROJECT_ID/medi-chatbot:$COMMIT_SHA'
       ]
 
+  # Step 3: Deploy the app to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: gcloud
     args:
       [
         'run',
         'deploy',
-        'medi-chatbot',  # 👈 This is the Cloud Run service name
+        'medi-chatbot',  # Cloud Run service name
         '--image=gcr.io/$PROJECT_ID/medi-chatbot:$COMMIT_SHA',
-        '--region=us-central1',
+        '--region=us-central1',  # ✅ adjust if you're using another region
         '--platform=managed',
         '--allow-unauthenticated'
       ]
 
 images:
   - 'gcr.io/$PROJECT_ID/medi-chatbot:$COMMIT_SHA'
+
+# ✅ This is REQUIRED to fix your earlier Cloud Build error
+options:
+  logging: CLOUD_LOGGING_ONLY
