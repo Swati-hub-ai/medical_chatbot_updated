@@ -5,18 +5,18 @@ steps:
       [
         'build',
         '-t',
-        'gcr.io/$PROJECT_ID/medi-chatbot:$COMMIT_SHA',
+        'us-central1-docker.pkg.dev/$PROJECT_ID/medi-chatbot/medi-chatbot:$COMMIT_SHA',
         '--build-arg',
         'HF_TOKEN=$_HF_TOKEN',
         '.'
       ]
 
-  # Step 2: Push Docker image to Google Container Registry
+  # Step 2: Push Docker image to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
     args:
       [
         'push',
-        'gcr.io/$PROJECT_ID/medi-chatbot:$COMMIT_SHA'
+        'us-central1-docker.pkg.dev/$PROJECT_ID/medi-chatbot/medi-chatbot:$COMMIT_SHA'
       ]
 
   # Step 3: Deploy the app to Cloud Run
@@ -27,15 +27,14 @@ steps:
         'run',
         'deploy',
         'medi-chatbot',  # Cloud Run service name
-        '--image=gcr.io/$PROJECT_ID/medi-chatbot:$COMMIT_SHA',
-        '--region=us-central1',  # ✅ adjust if you're using another region
+        '--image=us-central1-docker.pkg.dev/$PROJECT_ID/medi-chatbot/medi-chatbot:$COMMIT_SHA',
+        '--region=us-central1',
         '--platform=managed',
         '--allow-unauthenticated'
       ]
 
 images:
-  - 'gcr.io/$PROJECT_ID/medi-chatbot:$COMMIT_SHA'
+  - 'us-central1-docker.pkg.dev/$PROJECT_ID/medi-chatbot/medi-chatbot:$COMMIT_SHA'
 
-# ✅ This is REQUIRED to fix your earlier Cloud Build error
 options:
   logging: CLOUD_LOGGING_ONLY
